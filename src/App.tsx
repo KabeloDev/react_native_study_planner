@@ -13,27 +13,41 @@ export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaProvider>
-        <Tabs.Navigator>
-          <Tabs.Screen name="Subjects" 
-            component={SubjectsScreen} 
-            options={{ 
-              headerShown: false, 
-              tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} /> 
-          }} />
-          
-          <Tabs.Screen name="Reminders" 
-            component={RemindersScreen} 
-            options={{ 
+        <Tabs.Navigator
+          screenOptions={{
+            tabBarStyle: {
+              backgroundColor: "#fff",
+              height: 60,
+              borderRadius: 30,
+              position: "absolute",
+              shadowColor: "#000",
+              shadowOpacity: 0.05,
+              shadowRadius: 3,
+              elevation: 5,
+              margin: 30,
+            },
+          }}
+        >
+          <Tabs.Screen name="Subjects"
+            component={SubjectsScreen}
+            options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} /> 
-          }} />
+              tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />
+            }} />
 
-          <Tabs.Screen name="Settings" 
-            component={SettingsScreen} 
-            options={{ 
+          <Tabs.Screen name="Reminders"
+            component={RemindersScreen}
+            options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} /> 
-          }} />
+              tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />
+            }} />
+
+          <Tabs.Screen name="Settings"
+            component={SettingsScreen}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />
+            }} />
         </Tabs.Navigator>
       </SafeAreaProvider>
     </NavigationContainer>
