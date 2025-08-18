@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types/route.type";
+import { RootStackParamList } from "../../types/route.type";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 

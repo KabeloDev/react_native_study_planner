@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootTabParamList, RootStackParamList } from './types/route.type';
 import Icon from 'react-native-vector-icons/Ionicons';
-import SubjectsScreen from './screens/subjects';
-import RemindersScreen from './screens/reminders';
-import SettingsScreen from './screens/settings';
-import SubjectDetailsScreen from './screens/subject_details';
+import SubjectsScreen from './screens/subjects/subjects';
+import RemindersScreen from './screens/reminders/reminders';
+import SettingsScreen from './screens/settings/settings';
+import SubjectDetailsScreen from './screens/subjects/subject_details';
+
 
 export default function App() {
   const Tabs = createBottomTabNavigator<RootTabParamList>();
