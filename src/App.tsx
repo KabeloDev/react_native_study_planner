@@ -1,14 +1,26 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootTabParamList } from './types/route.type';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootTabParamList, RootStackParamList } from './types/route.type';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SubjectsScreen from './screens/subjects';
 import RemindersScreen from './screens/reminders';
 import SettingsScreen from './screens/settings';
+import SubjectDetailsScreen from './screens/subject_details';
 
 export default function App() {
   const Tabs = createBottomTabNavigator<RootTabParamList>();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
+
+  function SubjectStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Subjects" component={SubjectsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Details" }} />
+      </Stack.Navigator>
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -28,25 +40,28 @@ export default function App() {
             },
           }}
         >
-          <Tabs.Screen name="Subjects"
-            component={SubjectsScreen}
+          <Tabs.Screen name="SubjectsTab"
+            component={SubjectStack}
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />
+              tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />,
+              title:'Subjects'
             }} />
 
-          <Tabs.Screen name="Reminders"
+          <Tabs.Screen name="RemindersTab"
             component={RemindersScreen}
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />
+              tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />,
+              title:'Reminders'
             }} />
 
-          <Tabs.Screen name="Settings"
+          <Tabs.Screen name="SettingsTab"
             component={SettingsScreen}
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />
+              tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />,
+              title:'Settings'
             }} />
         </Tabs.Navigator>
       </SafeAreaProvider>
