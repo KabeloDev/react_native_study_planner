@@ -8,11 +8,51 @@ import SubjectsScreen from './screens/subjects/subjects';
 import RemindersScreen from './screens/reminders/reminders';
 import SettingsScreen from './screens/settings/settings';
 import SubjectDetailsScreen from './screens/subjects/subject_details';
+import { Alert, PermissionsAndroid } from 'react-native';
+import { useEffect } from 'react';
+import messaging from '@react-native-firebase/messaging'
 
+const Tabs = createBottomTabNavigator<RootTabParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const Tabs = createBottomTabNavigator<RootTabParamList>();
-  const Stack = createNativeStackNavigator<RootStackParamList>();
+  const requestPermission = async () => {
+    try {
+      const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+      console.log('Permission: ', result);
+      if (result == PermissionsAndroid.RESULTS.GRANTED) {
+        requestToken();
+      } else {
+        Alert.alert("Permission denied")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const requestToken = async () => {
+    try {
+      await messaging().registerDeviceForRemoteMessages();
+      const token = await messaging().getToken();
+      console.log('Token: ', token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    requestPermission();
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(
+        `${remoteMessage.notification?.title}`,
+        `${remoteMessage.notification?.body}`
+      );
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   function SubjectStack() {
     return (
@@ -46,7 +86,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />,
-              title:'Subjects'
+              title: 'Subjects'
             }} />
 
           <Tabs.Screen name="RemindersTab"
@@ -54,7 +94,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />,
-              title:'Reminders'
+              title: 'Reminders'
             }} />
 
           <Tabs.Screen name="SettingsTab"
@@ -62,7 +102,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />,
-              title:'Settings'
+              title: 'Settings'
             }} />
         </Tabs.Navigator>
       </SafeAreaProvider>
