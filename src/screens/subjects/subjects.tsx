@@ -34,24 +34,21 @@ export default function SubjectsScreen({ navigation }: Props) {
             <FlatList
                 data={subjectData}
                 renderItem={({ item }) => (
-                    <View>
+                    <TouchableOpacity
+                       onPress={() => navigation.push('SubjectDetails', { subject: item })}
+                    >
                         <Text>
                             {item.title}
                         </Text>
                         <Text>
                             {item.description}
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
             <View style={styles.divider}></View>
              <View style={styles.body}>
                 <Text>Subjects Screen</Text>
-                <TouchableOpacity
-                    onPress={() => navigation.push('SubjectDetails')}
-                >
-                    <Text style={styles.text}>View Details</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => navigation.push('AddSubjects')}
                 >
