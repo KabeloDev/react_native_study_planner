@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
 import { useEffect, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 
@@ -17,7 +17,6 @@ export default function SubjectsScreen({ navigation }: Props) {
 
                 const data = snapshot.docs.map(doc => ({
                     title: doc.data().title,
-                    description: doc.data().description
                 }));
 
                 setSubjectData(data);
