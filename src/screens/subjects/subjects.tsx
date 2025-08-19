@@ -34,7 +34,7 @@ export default function SubjectsScreen({ navigation }: Props) {
             <View>
                 <FlatList
                     data={subjectData}
-                    numColumns={2}
+                    numColumns={3}
                     contentContainerStyle={{ padding: 8 }}
                     renderItem={({ item }) => (
                         <TouchableOpacity
@@ -63,12 +63,14 @@ const styles = StyleSheet.create({
     body: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 250,
+        marginTop: 100,
         padding: 10
     },
     text: {
-        marginRight: 50,
+        margin: 5,
         color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
         backgroundColor: '#222a31ff',
         borderRadius: 10,
         padding: 20
@@ -76,7 +78,8 @@ const styles = StyleSheet.create({
     button: {
         position: 'absolute',
         bottom: 120,
-        right: 150,
+        right: 90,
+        width: 250,
         backgroundColor: '#007AFF',
         paddingVertical: 14,
         paddingHorizontal: 20,
@@ -91,5 +94,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
+        paddingLeft: 60
     },
 })

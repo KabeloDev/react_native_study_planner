@@ -27,24 +27,42 @@ export default function AddSubjectScreen({ navigation }: Props) {
 
     return (
         <View style={styles.body}>
-            <Text>
-                Add subject screen
-            </Text>
             <TouchableOpacity
                 onPress={() => handleSave()}
+                style={styles.button}
             >
-                <Text style={styles.text}>Add</Text>
+                <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
             <View>
+                <Text>Subject</Text>
+            </View>
+            <View style={styles.inputTitle}>
                 <TextInput
                     style={styles.input}
                     placeholder="Title"
                     value={subjectTitle}
                     onChangeText={setSubjectTitle}
                 />
+            </View>
+            <View>
+                <Text>Session</Text>
+            </View>
+             <View>
                 <TextInput
                     style={styles.input}
-                    placeholder="Description"
+                    placeholder="Topic"
+                    value={subjectTitle}
+                    onChangeText={setSubjectTitle}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Date"
+                    value={subjectDescription}
+                    onChangeText={setSubjectDescription}
+                />
+                 <TextInput
+                    style={styles.input}
+                    placeholder="Session Time"
                     value={subjectDescription}
                     onChangeText={setSubjectDescription}
                 />
@@ -65,7 +83,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     text: {
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 20
     },
     input: {
         borderWidth: 1,
@@ -74,5 +93,29 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginVertical: 5,
         width: 400
+    },
+    inputTitle: {
+        marginBottom: 20
+    },
+    button: {
+        position: 'absolute',
+        bottom: 120,
+        right: 90,
+        width: 250,
+        backgroundColor: '#007AFF',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingLeft: 90
     },
 })
