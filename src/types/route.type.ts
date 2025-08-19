@@ -9,4 +9,5 @@ export type RootStackParamList = {
     SubjectDetails: {subject: any};
     AddSubjects: undefined;
     AddSession: {subject: any};
+    UpdateSession: {subject: any};
 };

@@ -14,6 +14,7 @@ import messaging from '@react-native-firebase/messaging'
 import AddSubjectScreen from './screens/subjects/add_subjects';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AddSessionsScreen from './screens/subjects/sessions/add_session';
+import UpdateSessionScreen from './screens/subjects/sessions/update_session';
 
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
@@ -65,6 +66,7 @@ export default function App() {
         <Stack.Screen name="AddSubjects" component={AddSubjectScreen} options={{ title: "Add Subject" }} />
         <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Details" }} />
         <Stack.Screen name="AddSession" component={AddSessionsScreen} options={{ title: "Add Session" }} />
+        <Stack.Screen name="UpdateSession" component={UpdateSessionScreen} options={{ title: "Update Session" }} />
       </Stack.Navigator>
     );
   }

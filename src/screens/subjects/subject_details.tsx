@@ -52,7 +52,7 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
                     contentContainerStyle={{ padding: 8 }}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                        // onPress={() => navigation.navigate('EditSession', { subject: item.sessionSubject })}
+                            onPress={() => navigation.navigate('UpdateSession', { subject: item })}
                         >
 
                             <Text style={styles.text}>
@@ -69,6 +69,13 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
                     onPress={() => navigation.navigate('AddSession', { subject: subject })}
                 >
                     <Text style={styles.buttonText}>Add session</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.deleteButton}>
+                <TouchableOpacity
+                // onPress={}
+                >
+                    <Text style={styles.buttonText}>Delete Subject</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -94,10 +101,25 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        bottom: 120,
+        bottom: 180,
         right: 90,
         width: 250,
         backgroundColor: '#007AFF',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    deleteButton: {
+        position: 'absolute',
+        bottom: 120,
+        right: 90,
+        width: 250,
+        backgroundColor: '#ff0000ff',
         paddingVertical: 14,
         paddingHorizontal: 20,
         borderRadius: 30,
