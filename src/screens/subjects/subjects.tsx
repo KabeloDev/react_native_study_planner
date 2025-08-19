@@ -13,6 +13,11 @@ export default function SubjectsScreen ({ navigation }: Props) {
             >
                 <Text style={styles.text}>View Details</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.push('AddSubjects')}
+            >
+                <Text style={styles.text}>Add subject</Text>
+            </TouchableOpacity>
         </View>
     )
 }

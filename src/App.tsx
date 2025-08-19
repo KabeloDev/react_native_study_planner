@@ -11,6 +11,7 @@ import SubjectDetailsScreen from './screens/subjects/subject_details';
 import { Alert, PermissionsAndroid } from 'react-native';
 import { useEffect } from 'react';
 import messaging from '@react-native-firebase/messaging'
+import AddSubjectScreen from './screens/subjects/add_subjects';
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -58,6 +59,7 @@ export default function App() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Subjects" component={SubjectsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AddSubjects" component={AddSubjectScreen} options={{ title: "Add Subject" }} />
         <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Details" }} />
       </Stack.Navigator>
     );

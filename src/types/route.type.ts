@@ -7,4 +7,5 @@ export type RootTabParamList = {
 export type RootStackParamList = {
     Subjects: undefined;
     SubjectDetails: undefined;
+    AddSubjects: undefined;
 };
