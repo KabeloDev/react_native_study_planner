@@ -8,10 +8,12 @@ import SubjectsScreen from './screens/subjects/subjects';
 import RemindersScreen from './screens/reminders/reminders';
 import SettingsScreen from './screens/settings/settings';
 import SubjectDetailsScreen from './screens/subjects/subject_details';
-import { Alert, PermissionsAndroid } from 'react-native';
+import { Alert, PermissionsAndroid, StyleSheet } from 'react-native';
 import { useEffect } from 'react';
 import messaging from '@react-native-firebase/messaging'
 import AddSubjectScreen from './screens/subjects/add_subjects';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -66,49 +68,56 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
-        <Tabs.Navigator
-          screenOptions={{
-            tabBarStyle: {
-              backgroundColor: "#fff",
-              height: 60,
-              borderRadius: 30,
-              position: "absolute",
-              shadowColor: "#000",
-              shadowOpacity: 0.05,
-              shadowRadius: 3,
-              elevation: 5,
-              margin: 30,
-            },
-          }}
-        >
-          <Tabs.Screen name="SubjectsTab"
-            component={SubjectStack}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />,
-              title: 'Subjects'
-            }} />
+    <GestureHandlerRootView style={styles.gestureRoot}>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <Tabs.Navigator
+            screenOptions={{
+              tabBarStyle: {
+                backgroundColor: "#fff",
+                height: 60,
+                borderRadius: 30,
+                position: "absolute",
+                shadowColor: "#000",
+                shadowOpacity: 0.05,
+                shadowRadius: 3,
+                elevation: 5,
+                margin: 30,
+              },
+            }}
+          >
+            <Tabs.Screen name="SubjectsTab"
+              component={SubjectStack}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color }) => <Icon size={28} name="book-outline" color={color} />,
+                title: 'Subjects'
+              }} />
 
-          <Tabs.Screen name="RemindersTab"
-            component={RemindersScreen}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />,
-              title: 'Reminders'
-            }} />
+            <Tabs.Screen name="RemindersTab"
+              component={RemindersScreen}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />,
+                title: 'Reminders'
+              }} />
 
-          <Tabs.Screen name="SettingsTab"
-            component={SettingsScreen}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />,
-              title: 'Settings'
-            }} />
-        </Tabs.Navigator>
-      </SafeAreaProvider>
-    </NavigationContainer>
+            <Tabs.Screen name="SettingsTab"
+              component={SettingsScreen}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />,
+                title: 'Settings'
+              }} />
+          </Tabs.Navigator>
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 
+const styles = StyleSheet.create({
+  gestureRoot: {
+    flex: 1,
+  }
+})
