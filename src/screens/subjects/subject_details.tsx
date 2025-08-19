@@ -1,42 +1,47 @@
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useFocusEffect } from "@react-navigation/native";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../types/route.type";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = {
-    route: RouteProp<RootStackParamList, 'SubjectDetails'>;
-};
+type Props = NativeStackScreenProps<
+    RootStackParamList,
+    "SubjectDetails"
+>;
 
-export default function SubjectDetailsScreen({ route }: Props) {
+
+export default function SubjectDetailsScreen({ route, navigation }: Props) {
     const { subject } = route.params;
 
     const [sessionData, setSessionData] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fecthSessions = async () => {
-            try {
-                const snapshot = await firestore().collection('sessions').get();
+    useFocusEffect(
+        useCallback(() => {
+            const fecthSessions = async () => {
+                try {
+                    const snapshot = await firestore().collection('sessions').get();
 
-                const data = snapshot.docs.map(doc => ({
-                    sessionSubject: doc.data().sessionSubject,
-                    sessionTopic: doc.data().sessionTopic,
-                    sessionDate: doc.data().sessionDate,
-                    sessionTime: doc.data().sessionTime,
-                }));
+                    const data = snapshot.docs.map(doc => ({
+                        sessionSubject: doc.data().sessionSubject,
+                        sessionTopic: doc.data().sessionTopic,
+                        sessionDate: doc.data().sessionDate,
+                        sessionTime: doc.data().sessionTime,
+                    }));
 
-                const filtered = data.filter(
-                    (s) => s.sessionSubject === subject.title
-                );
+                    const filtered = data.filter(
+                        (s) => s.sessionSubject === subject.title
+                    );
 
-                setSessionData(filtered);
-            } catch (error) {
-                console.log('Error fetching subject sessions: ', error)
+                    setSessionData(filtered);
+                } catch (error) {
+                    console.log('Error fetching subject sessions: ', error)
+                }
             }
-        }
 
-        fecthSessions();
-    }, []);
+            fecthSessions();
+        }, [])
+    );
 
     return (
         <View style={styles.body}>
@@ -47,7 +52,7 @@ export default function SubjectDetailsScreen({ route }: Props) {
                     contentContainerStyle={{ padding: 8 }}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                        // onPress={}
+                        // onPress={() => navigation.navigate('EditSession', { subject: item.sessionSubject })}
                         >
 
                             <Text style={styles.text}>
@@ -61,7 +66,7 @@ export default function SubjectDetailsScreen({ route }: Props) {
             </View>
             <View style={styles.button}>
                 <TouchableOpacity
-                // onPress={}
+                    onPress={() => navigation.navigate('AddSession', { subject: subject })}
                 >
                     <Text style={styles.buttonText}>Add session</Text>
                 </TouchableOpacity>
