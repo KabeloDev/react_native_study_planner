@@ -31,28 +31,28 @@ export default function SubjectsScreen({ navigation }: Props) {
 
     return (
         <View style={styles.body}>
-            <FlatList
-                data={subjectData}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                       onPress={() => navigation.push('SubjectDetails', { subject: item })}
-                    >
-                        <Text>
-                            {item.title}
-                        </Text>
-                        <Text>
-                            {item.description}
-                        </Text>
-                    </TouchableOpacity>
-                )}
-            />
-            <View style={styles.divider}></View>
-             <View style={styles.body}>
-                <Text>Subjects Screen</Text>
+            <View>
+                <FlatList
+                    data={subjectData}
+                    numColumns={2}
+                    contentContainerStyle={{ padding: 8 }}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => navigation.push('SubjectDetails', { subject: item })}
+                        >
+                           
+                                <Text style={styles.text}>
+                                    {item.title}
+                                </Text>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
+            <View style={styles.button}>
                 <TouchableOpacity
                     onPress={() => navigation.push('AddSubjects')}
                 >
-                    <Text style={styles.text}>Add subject</Text>
+                    <Text style={styles.buttonText}>Add subject</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -63,14 +63,33 @@ const styles = StyleSheet.create({
     body: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 250
+        marginTop: 250,
+        padding: 10
     },
     text: {
-        marginTop: 20
+        marginRight: 50,
+        color: 'white',
+        backgroundColor: '#222a31ff',
+        borderRadius: 10,
+        padding: 20
     },
-    divider: {
-        backgroundColor: 'grey',
-        height: 1,
-        width: 300
-    }
+    button: {
+        position: 'absolute',
+        bottom: 120,
+        right: 150,
+        backgroundColor: '#007AFF',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
 })
