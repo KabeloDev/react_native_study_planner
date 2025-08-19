@@ -1,22 +1,24 @@
-import { StyleSheet, View, Text, ActivityIndicator, Alert, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Alert, TouchableOpacity, TextInput } from "react-native";
 import firestore from '@react-native-firebase/firestore';
 import { useState } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/route.type";
 
-export default function AddSubjectScreen() {
-    const [subjectData, setSubjectData] = useState({
-        title: "",
-        description: "",
-        createdAt: ""
-    });
-    
+type Props = NativeStackScreenProps<RootStackParamList, 'AddSubjects'>;
+
+export default function AddSubjectScreen({ navigation }: Props) {
+    const [subjectTitle, setSubjectTitle] = useState('');
+    const [subjectDescription, setSubjectDescription] = useState('');
+
     const handleSave = async () => {
         try {
             await firestore().collection('subjects').add({
-                title: 'My First Item',
-                description: 'Hello Firestore!',
+                title: subjectTitle,
+                description: subjectDescription,
                 createdAt: firestore.FieldValue.serverTimestamp(),
             })
             Alert.alert("Subject added!");
+            navigation.navigate('Subjects');
         } catch (error) {
             console.error("Error adding subject:", error);
         }
@@ -33,6 +35,20 @@ export default function AddSubjectScreen() {
             >
                 <Text style={styles.text}>Add</Text>
             </TouchableOpacity>
+            <View>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Title"
+                    value={subjectTitle}
+                    onChangeText={setSubjectTitle}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Description"
+                    value={subjectDescription}
+                    onChangeText={setSubjectDescription}
+                />
+            </View>
         </View>
     )
 }
@@ -50,5 +66,13 @@ const styles = StyleSheet.create({
     },
     text: {
         marginTop: 20
-    }
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        padding: 10,
+        borderRadius: 8,
+        marginVertical: 5,
+        width: 400
+    },
 })
