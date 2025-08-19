@@ -8,15 +8,23 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddSubjects'>;
 
 export default function AddSubjectScreen({ navigation }: Props) {
     const [subjectTitle, setSubjectTitle] = useState('');
-    const [subjectDescription, setSubjectDescription] = useState('');
+    const [sessionTopic, setSessionTopic] = useState('');
+    const [sessionDate, setSessionDate] = useState('');
+    const [sessionTime, setSessionTime] = useState('');
 
     const handleSave = async () => {
         try {
             await firestore().collection('subjects').add({
                 title: subjectTitle,
-                description: subjectDescription,
                 createdAt: firestore.FieldValue.serverTimestamp(),
-            })
+            });
+
+            await firestore().collection('sessions').add({
+                sessionSubject: subjectTitle,
+                sessionTopic: sessionTopic,
+                sessionDate: sessionDate,
+                sessionTime: sessionTime
+            });
             Alert.alert("Subject added!");
             navigation.navigate('Subjects');
         } catch (error) {
@@ -51,20 +59,20 @@ export default function AddSubjectScreen({ navigation }: Props) {
                 <TextInput
                     style={styles.input}
                     placeholder="Topic"
-                    value={subjectTitle}
-                    onChangeText={setSubjectTitle}
+                    value={sessionTopic}
+                    onChangeText={setSessionTopic}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Date"
-                    value={subjectDescription}
-                    onChangeText={setSubjectDescription}
+                    value={sessionDate}
+                    onChangeText={setSessionDate}
                 />
                  <TextInput
                     style={styles.input}
                     placeholder="Session Time"
-                    value={subjectDescription}
-                    onChangeText={setSubjectDescription}
+                    value={sessionTime}
+                    onChangeText={setSessionTime}
                 />
             </View>
         </View>
