@@ -1,16 +1,43 @@
-import { RouteProp } from "@react-navigation/native";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../../types/route.type";
+import firestore from '@react-native-firebase/firestore';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = { route: RouteProp<RootStackParamList, 'UpdateSession'> };
+type Props = NativeStackScreenProps<
+    RootStackParamList,
+    "UpdateSession"
+>;
 
-export default function UpdateSessionScreen({ route }: Props) {
+export default function UpdateSessionScreen({ route, navigation }: Props) {
     const { subject } = route.params;
+
+     const deleteSessiontByTopic = async (topic: string) => {
+        try {
+            const sessionSnapshot = await  firestore()
+                .collection('sessions')
+                .where('sessionTopic', '==', topic)
+                .get();
+
+            if (sessionSnapshot.empty) {
+                console.log('No subjection sessions found with that topic');
+                return;
+            }
+
+            sessionSnapshot.forEach(async (doc) => {
+                await firestore().collection('sessions').doc(doc.id).delete();
+                navigation.goBack();
+                Alert.alert(`Session deleted!`);
+                console.log(`Deleted subject session with id: ${doc.id}`);
+            });
+        } catch (error) {
+            console.error('Error deleting subject session:', error);
+        }
+    };
 
     return (
         <View style={styles.body}>
             <Text>Update Session Screen</Text>
-            <Text>{subject.sessionSubject}</Text>
+            <Text>{subject.sessionTopic}</Text>
 
             <View style={styles.button}>
                 <TouchableOpacity
@@ -22,7 +49,7 @@ export default function UpdateSessionScreen({ route }: Props) {
 
             <View style={styles.deleteButton}>
                 <TouchableOpacity
-                // onPress={}
+                    onPress={() => deleteSessiontByTopic(subject.sessionTopic)}
                 >
                     <Text style={styles.buttonText}>Delete Session</Text>
                 </TouchableOpacity>
