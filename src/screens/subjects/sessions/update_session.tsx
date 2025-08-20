@@ -1,7 +1,8 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../../types/route.type";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
 
 type Props = NativeStackScreenProps<
     RootStackParamList,
@@ -11,9 +12,21 @@ type Props = NativeStackScreenProps<
 export default function UpdateSessionScreen({ route, navigation }: Props) {
     const { subject } = route.params;
 
-     const deleteSessiontByTopic = async (topic: string) => {
+    let [sessionTopic, setSessionTopic] = useState('');
+    let [sessionDate, setSessionDate] = useState('');
+    let [sessionTime, setSessionTime] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        setSessionTopic(subject.sessionTopic ?? '');
+        setSessionDate(subject.sessionDate ?? '');
+        setSessionTime(subject.sessionTime ?? '');
+    }, [subject]);
+
+
+    const deleteSessiontByTopic = async (topic: string) => {
         try {
-            const sessionSnapshot = await  firestore()
+            const sessionSnapshot = await firestore()
                 .collection('sessions')
                 .where('sessionTopic', '==', topic)
                 .get();
@@ -34,14 +47,67 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
         }
     };
 
+    const updateSessiontByTopic = async (topic: string) => {
+        try {
+            const sessionSnapshot = await firestore()
+                .collection('sessions')
+                .where('sessionTopic', '==', topic)
+                .get();
+
+            if (sessionSnapshot.empty) {
+                console.log('No subjection sessions found with that topic');
+                return;
+            }
+
+            if (sessionTopic == null || sessionDate == null || sessionTime == null) {
+                sessionTopic = subject.sessionTopic;
+                sessionDate = subject.sessionDate;
+                sessionTime = subject.sessionTime;
+            }
+
+            sessionSnapshot.forEach(async (doc) => {
+                await firestore().collection('sessions').doc(doc.id).update({
+                    sessionTopic: sessionTopic,
+                    sessionDate: sessionDate,
+                    sessionTime: sessionTime
+                });
+                navigation.goBack();
+                Alert.alert(`Session updated!`);
+                console.log(`Updated subject session with id: ${doc.id}`);
+            });
+        } catch (error) {
+            console.error('Error updating subject session:', error);
+        }
+    };
+
     return (
         <View style={styles.body}>
-            <Text>Update Session Screen</Text>
             <Text>{subject.sessionTopic}</Text>
+
+            <View>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Topic"
+                    defaultValue={subject.sessionTopic}
+                    onChangeText={setSessionTopic}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Date"
+                    defaultValue={subject.sessionDate}
+                    onChangeText={setSessionDate}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Session Time"
+                    defaultValue={subject.sessionTime}
+                    onChangeText={setSessionTime}
+                />
+            </View>
 
             <View style={styles.button}>
                 <TouchableOpacity
-                // onPress={}
+                    onPress={() => updateSessiontByTopic(subject.sessionTopic)}
                 >
                     <Text style={styles.buttonText}>Update Session</Text>
                 </TouchableOpacity>
@@ -99,5 +165,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15,
         paddingLeft: 25
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        padding: 10,
+        borderRadius: 8,
+        marginVertical: 5,
+        width: 400
     },
 })
