@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native"
 
-export default function SettingsScreen () {
+export default function DocumentsScreen () {
     return (
         <View style={styles.body}>
-            <Text>Settings Screen</Text>
+            <Text>Documents Screen</Text>
         </View>
     )
 }

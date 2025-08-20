@@ -1,7 +1,7 @@
 export type RootTabParamList = {
     SubjectsTab: undefined;
     RemindersTab: undefined;
-    SettingsTab: undefined;
+    DocumentsTab: undefined;
 };
 
 export type RootStackParamList = {
