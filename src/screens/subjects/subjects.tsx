@@ -1,29 +1,102 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
+import { useCallback, useState } from "react";
+import firestore from '@react-native-firebase/firestore';
+import { FlatList } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 
-export default function SubjectsScreen ({ navigation }: Props) {
+export default function SubjectsScreen({ navigation }: Props) {
+    const [subjectData, setSubjectData] = useState<any[]>([]);
+
+    useFocusEffect(
+        useCallback(() => {
+            const fecthSubjects = async () => {
+                try {
+                    const snapshot = await firestore().collection('subjects').get();
+
+                    const data = snapshot.docs.map(doc => ({
+                        title: doc.data().title,
+                    }));
+
+                    setSubjectData(data);
+                } catch (error) {
+                    console.log('Error fetching subjects: ', error);
+                    Alert.alert('Something went wrong. Please try again.');
+                }
+            }
+
+            fecthSubjects();
+        }, [])
+    );
+
     return (
         <View style={styles.body}>
-            <Text>Subjects Screen</Text>
-            <TouchableOpacity
-                onPress={() => navigation.push('SubjectDetails')}
-            >
-                <Text style={styles.text}>View Details</Text>
-            </TouchableOpacity>
+            <View>
+                <FlatList
+                    data={subjectData}
+                    numColumns={3}
+                    contentContainerStyle={{ padding: 8 }}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => navigation.push('SubjectDetails', { subject: item })}
+                        >
+
+                            <Text style={styles.text}>
+                                {item.title}
+                            </Text>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
+            <View style={styles.button}>
+                <TouchableOpacity
+                    onPress={() => navigation.push('AddSubjects')}
+                >
+                    <Text style={styles.buttonText}>Add subject</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     body: {
-        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 100,
+        padding: 10
     },
     text: {
-        marginTop: 20
-    }
+        margin: 5,
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+        backgroundColor: '#222a31ff',
+        borderRadius: 10,
+        padding: 20
+    },
+    button: {
+        position: 'absolute',
+        bottom: 120,
+        right: 90,
+        width: 250,
+        backgroundColor: '#007AFF',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingLeft: 60
+    },
 })
