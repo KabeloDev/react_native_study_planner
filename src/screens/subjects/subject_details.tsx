@@ -35,7 +35,8 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
 
                     setSessionData(filtered);
                 } catch (error) {
-                    console.log('Error fetching subject sessions: ', error)
+                    console.log('Error fetching subject sessions: ', error);
+                    Alert.alert('Something went wrong. Please try again.');
                 }
             }
 

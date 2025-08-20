@@ -15,7 +15,6 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
     let [sessionTopic, setSessionTopic] = useState('');
     let [sessionDate, setSessionDate] = useState('');
     let [sessionTime, setSessionTime] = useState('');
-    const [error, setError] = useState('');
 
     useEffect(() => {
         setSessionTopic(subject.sessionTopic ?? '');
@@ -44,6 +43,7 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
             });
         } catch (error) {
             console.error('Error deleting subject session:', error);
+            Alert.alert('Something went wrong. Please try again.');
         }
     };
 
@@ -77,6 +77,7 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
             });
         } catch (error) {
             console.error('Error updating subject session:', error);
+            Alert.alert('Something went wrong. Please try again.');
         }
     };
 

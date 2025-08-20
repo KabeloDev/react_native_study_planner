@@ -26,6 +26,7 @@ export default function AddSessionsScreen({ route }: Props) {
             navigation.goBack();
         } catch (error) {
             console.error("Error adding subject session:", error);
+            Alert.alert('Something went wrong. Please try again.');
         }
     };
 

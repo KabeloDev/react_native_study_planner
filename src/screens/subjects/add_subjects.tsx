@@ -29,6 +29,7 @@ export default function AddSubjectScreen({ navigation }: Props) {
             navigation.navigate('Subjects');
         } catch (error) {
             console.error("Error adding subject:", error);
+            Alert.alert('Something went wrong. Please try again.');
         }
     };
 
@@ -55,7 +56,7 @@ export default function AddSubjectScreen({ navigation }: Props) {
             <View>
                 <Text>Session</Text>
             </View>
-             <View>
+            <View>
                 <TextInput
                     style={styles.input}
                     placeholder="Topic"
@@ -68,7 +69,7 @@ export default function AddSubjectScreen({ navigation }: Props) {
                     value={sessionDate}
                     onChangeText={setSessionDate}
                 />
-                 <TextInput
+                <TextInput
                     style={styles.input}
                     placeholder="Session Time"
                     value={sessionTime}

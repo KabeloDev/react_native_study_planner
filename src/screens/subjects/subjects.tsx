@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
 import { useCallback, useState } from "react";
@@ -23,7 +23,8 @@ export default function SubjectsScreen({ navigation }: Props) {
 
                     setSubjectData(data);
                 } catch (error) {
-                    console.log('Error fetching subjects: ', error)
+                    console.log('Error fetching subjects: ', error);
+                    Alert.alert('Something went wrong. Please try again.');
                 }
             }
 
