@@ -1,32 +1,35 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import { FlatList } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 
 export default function SubjectsScreen({ navigation }: Props) {
     const [subjectData, setSubjectData] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fecthSubjects = async () => {
-            try {
-                const snapshot = await firestore().collection('subjects').get();
+    useFocusEffect(
+        useCallback(() => {
+            const fecthSubjects = async () => {
+                try {
+                    const snapshot = await firestore().collection('subjects').get();
 
-                const data = snapshot.docs.map(doc => ({
-                    title: doc.data().title,
-                }));
+                    const data = snapshot.docs.map(doc => ({
+                        title: doc.data().title,
+                    }));
 
-                setSubjectData(data);
-            } catch (error) {
-                console.log('Error fetching subjects: ', error)
+                    setSubjectData(data);
+                } catch (error) {
+                    console.log('Error fetching subjects: ', error)
+                }
             }
-        }
 
-        fecthSubjects();
-    }, []);
+            fecthSubjects();
+        }, [])
+    );
 
     return (
         <View style={styles.body}>
@@ -39,10 +42,10 @@ export default function SubjectsScreen({ navigation }: Props) {
                         <TouchableOpacity
                             onPress={() => navigation.push('SubjectDetails', { subject: item })}
                         >
-                           
-                                <Text style={styles.text}>
-                                    {item.title}
-                                </Text>
+
+                            <Text style={styles.text}>
+                                {item.title}
+                            </Text>
                         </TouchableOpacity>
                     )}
                 />

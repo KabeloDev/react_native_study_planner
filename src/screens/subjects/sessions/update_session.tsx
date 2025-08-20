@@ -16,7 +16,7 @@ export default function UpdateSessionScreen({ route }: Props) {
                 <TouchableOpacity
                 // onPress={}
                 >
-                    <Text style={styles.buttonText}>Save</Text>
+                    <Text style={styles.buttonText}>Update Session</Text>
                 </TouchableOpacity>
             </View>
 
@@ -24,7 +24,7 @@ export default function UpdateSessionScreen({ route }: Props) {
                 <TouchableOpacity
                 // onPress={}
                 >
-                    <Text style={styles.buttonText}>Delete</Text>
+                    <Text style={styles.buttonText}>Delete Session</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -39,12 +39,12 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        bottom: 180,
-        right: 90,
-        width: 250,
+        bottom: 120,
+        right: 5,
+        width: 200,
         backgroundColor: '#007AFF',
-        paddingVertical: 14,
-        paddingHorizontal: 20,
+        paddingVertical: 15,
+        paddingHorizontal: 25,
         borderRadius: 30,
         elevation: 5,
         shadowColor: '#000',
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     deleteButton: {
         position: 'absolute',
         bottom: 120,
-        right: 90,
-        width: 250,
+        right: 220,
+        width: 200,
         backgroundColor: '#ff0000ff',
         paddingVertical: 14,
         paddingHorizontal: 20,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 16,
-        paddingLeft: 85
+        fontSize: 15,
+        paddingLeft: 25
     },
 })

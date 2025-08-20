@@ -1,7 +1,7 @@
-import { RouteProp, useFocusEffect } from "@react-navigation/native";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { useFocusEffect } from "@react-navigation/native";
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../types/route.type";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -43,6 +43,43 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
         }, [])
     );
 
+    const deleteSubjectByTitle = async (title: string) => {
+        try {
+            const subjectSnapshot = await firestore()
+                .collection('subjects')
+                .where('title', '==', title)
+                .get();
+            
+            const sessionSnapshot = await  firestore()
+                .collection('sessions')
+                .where('sessionSubject', '==', title)
+                .get();
+
+            if (subjectSnapshot.empty) {
+                console.log('No subject found with that title');
+                return;
+            }
+
+            if (sessionSnapshot.empty) {
+                console.log('No subjection sessions found with that title');
+                return;
+            }
+
+            subjectSnapshot.forEach(async (doc) => {
+                await firestore().collection('subjects').doc(doc.id).delete();
+                navigation.goBack();
+                Alert.alert(`${subject.title} deleted!`);
+                console.log(`Deleted subject with id: ${doc.id}`);
+            });
+
+            sessionSnapshot.forEach(async (doc) => {
+                await firestore().collection('sessions').doc(doc.id).delete();
+            });
+        } catch (error) {
+            console.error('Error deleting subject:', error);
+        }
+    };
+
     return (
         <View style={styles.body}>
             <View>
@@ -68,12 +105,12 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
                 <TouchableOpacity
                     onPress={() => navigation.navigate('AddSession', { subject: subject })}
                 >
-                    <Text style={styles.buttonText}>Add session</Text>
+                    <Text style={styles.buttonText}>Add Session</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.deleteButton}>
                 <TouchableOpacity
-                // onPress={}
+                    onPress={() => deleteSubjectByTitle(subject.title)}
                 >
                     <Text style={styles.buttonText}>Delete Subject</Text>
                 </TouchableOpacity>
@@ -101,12 +138,12 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        bottom: 180,
-        right: 90,
-        width: 250,
+        bottom: 120,
+        right: 5,
+        width: 200,
         backgroundColor: '#007AFF',
         paddingVertical: 14,
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         borderRadius: 30,
         elevation: 5,
         shadowColor: '#000',
@@ -117,8 +154,8 @@ const styles = StyleSheet.create({
     deleteButton: {
         position: 'absolute',
         bottom: 120,
-        right: 90,
-        width: 250,
+        right: 220,
+        width: 200,
         backgroundColor: '#ff0000ff',
         paddingVertical: 14,
         paddingHorizontal: 20,
@@ -133,6 +170,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
-        paddingLeft: 60
+        paddingLeft: 25
     },
 })
