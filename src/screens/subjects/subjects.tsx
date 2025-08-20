@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
 import { useCallback, useState } from "react";
@@ -34,6 +34,20 @@ export default function SubjectsScreen({ navigation }: Props) {
 
     return (
         <View style={styles.body}>
+            {subjectData.length === 0 ?
+                <View style={{ flex: 1 }}>
+                    <View>
+                        <Text style={styles.message}>No subjects at the moment.</Text>
+                        <Text style={styles.message}>Add subjects and start planning your studies.</Text>
+                        <Image
+                            source={require('../../images/add_subject.png')}
+                            style={styles.image}
+                        />
+                    </View>
+                </View>
+                :
+                null
+            }
             <View>
                 <FlatList
                     data={subjectData}
@@ -98,5 +112,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
         paddingLeft: 60
+    },
+    image: {
+        width: 500,
+        height: 200,
+        resizeMode: 'contain',
+        top: 300
+    },
+    message: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: '#242424ff',
+        top: 250,
+        marginBottom: 10,
+        fontStyle: 'italic'
     },
 })
