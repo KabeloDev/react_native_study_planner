@@ -14,7 +14,7 @@ import AddSubjectScreen from './screens/subjects/add_subjects';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AddSessionsScreen from './screens/subjects/sessions/add_session';
 import UpdateSessionScreen from './screens/subjects/sessions/update_session';
-import DocumentsScreen from './screens/settings/settings';
+import DocumentsScreen from './screens/documents/documents';
 
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
