@@ -6,7 +6,6 @@ import { RootTabParamList, RootStackParamList } from './types/route.type';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SubjectsScreen from './screens/subjects/subjects';
 import RemindersScreen from './screens/reminders/reminders';
-import SettingsScreen from './screens/settings/settings';
 import SubjectDetailsScreen from './screens/subjects/subject_details';
 import { Alert, PermissionsAndroid, StyleSheet } from 'react-native';
 import { useEffect } from 'react';
@@ -15,6 +14,7 @@ import AddSubjectScreen from './screens/subjects/add_subjects';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AddSessionsScreen from './screens/subjects/sessions/add_session';
 import UpdateSessionScreen from './screens/subjects/sessions/update_session';
+import DocumentsScreen from './screens/documents/documents';
 
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
@@ -106,12 +106,12 @@ export default function App() {
                 title: 'Reminders'
               }} />
 
-            <Tabs.Screen name="SettingsTab"
-              component={SettingsScreen}
+            <Tabs.Screen name="DocumentsTab"
+              component={DocumentsScreen}
               options={{
                 headerShown: false,
-                tabBarIcon: ({ color }) => <Icon size={28} name="settings-outline" color={color} />,
-                title: 'Settings'
+                tabBarIcon: ({ color }) => <Icon size={28} name="file-tray-full-outline" color={color} />,
+                title: 'Documents'
               }} />
           </Tabs.Navigator>
         </SafeAreaProvider>
