@@ -8,13 +8,14 @@ import SubjectsScreen from './screens/subjects/subjects';
 import RemindersScreen from './screens/reminders/reminders';
 import SubjectDetailsScreen from './screens/subjects/subject_details';
 import { Alert, PermissionsAndroid, StyleSheet } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import messaging from '@react-native-firebase/messaging'
 import AddSubjectScreen from './screens/subjects/add_subjects';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AddSessionsScreen from './screens/subjects/sessions/add_session';
 import UpdateSessionScreen from './screens/subjects/sessions/update_session';
 import DocumentsScreen from './screens/documents/documents';
+import firestore from '@react-native-firebase/firestore';
 
 
 const Tabs = createBottomTabNavigator<RootTabParamList>();
@@ -58,13 +59,33 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  const [reminders, setReminders] = useState<any[]>([]);
+
+  useEffect(() => {
+    firestore()
+      .collection('reminders')
+      .onSnapshot(snapshot => {
+        const data = snapshot.docs.map(doc => {
+          const docData = doc.data();
+
+          return {
+            subject: docData.subject,
+            topic: docData.topic,
+            reminderTime: docData.reminderTime,
+          };
+        });
+
+        setReminders(data);
+      });
+  }, []);
+
 
   function SubjectStack() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Subjects" component={SubjectsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AddSubjects" component={AddSubjectScreen} options={{ title: "Add Subject" }} />
-        <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Details" }} />
+        <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Sessions" }} />
         <Stack.Screen name="AddSession" component={AddSessionsScreen} options={{ title: "Add Session" }} />
         <Stack.Screen name="UpdateSession" component={UpdateSessionScreen} options={{ title: "Update Session" }} />
       </Stack.Navigator>
@@ -103,6 +124,7 @@ export default function App() {
               options={{
                 headerShown: false,
                 tabBarIcon: ({ color }) => <Icon size={28} name="notifications-outline" color={color} />,
+                tabBarBadge: reminders.length > 0 ? reminders.length : 0,
                 title: 'Reminders'
               }} />
 

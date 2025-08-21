@@ -1,5 +1,5 @@
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { RootStackParamList } from "../../../types/route.type";
+import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { RootStackParamList, RootTabParamList } from "../../../types/route.type";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
@@ -81,9 +81,27 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
         }
     };
 
+    const setReminder = async () => {
+        if (!subject.sessionTopic) return;
+
+        try {
+            const now = new Date();
+
+            await firestore().collection('reminders').add({
+                subject: subject.sessionSubject,
+                topic: subject.sessionTopic,
+                reminderTime: now.toISOString(),
+            });
+            
+            Alert.alert('Reminder set');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <View style={styles.body}>
-            <Text>{subject.sessionTopic}</Text>
+            <Text>Session</Text>
 
             <View>
                 <TextInput
@@ -104,6 +122,7 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
                     defaultValue={subject.sessionTime}
                     onChangeText={setSessionTime}
                 />
+                <Button title="Set Reminder" onPress={() => setReminder()} />
             </View>
 
             <View style={styles.button}>
@@ -129,7 +148,7 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     button: {
         position: 'absolute',
