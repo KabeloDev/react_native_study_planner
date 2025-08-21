@@ -1,7 +1,11 @@
-import { StyleSheet, Button, View, TouchableOpacity, Text } from "react-native"
+import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from "react-native"
 import { pick, types } from '@react-native-documents/picker';
 import storage from '@react-native-firebase/storage';
 import RNFS from 'react-native-fs';
+import { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
+import { LoadingComponent } from "../../components/loading";
+
 
 export default function DocumentsScreen() {
     const pickAndUploadFile = async () => {
@@ -26,8 +30,75 @@ export default function DocumentsScreen() {
         }
     };
 
+    const useFiles = (folder: string) => {
+        const [files, setFiles] = useState<FileItem[]>([]);
+        const [loading, setLoading] = useState(true);
+
+        useEffect(() => {
+            const fetchFiles = async () => {
+                try {
+                    const listResult = await storage().ref(folder).listAll();
+                    const urls = await Promise.all(
+                        listResult.items.map(async ref => {
+                            const url = await ref.getDownloadURL();
+                            return { name: ref.name, url };
+                        })
+                    );
+                    setFiles(urls);
+                } catch (error) {
+                    console.error('Failed to fetch files:', error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchFiles();
+        }, [folder]);
+
+        return { files, loading };
+    };
+
+
+    const { files, loading } = useFiles('uploads');
+
+    const openInBrowser = async (url: string) => {
+        try {
+            await Linking.openURL(url);
+        } catch (error) {
+            console.error('Failed to open URL:', error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <LoadingComponent />
+        )
+    }
+
     return (
         <View style={styles.body}>
+            <FlatList
+                style={{marginBottom: 200}}
+                showsVerticalScrollIndicator={false}
+                data={files}
+                keyExtractor={item => item.name}
+                renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                openInBrowser(item.url);
+                                console.log(item.url)
+                            }}
+                        >
+                        <View style={{padding: 10}}>
+                            <Image
+                                source={require('../../images/files.png')}
+                                style={{ height: 250, width: 300, marginBottom: 50 }}
+                            />
+                        </View>
+                        <Text>{item.name}</Text>
+                    </TouchableOpacity>
+                )}
+            />
             <View style={styles.button}>
                 <TouchableOpacity
                     onPress={() => pickAndUploadFile()}
