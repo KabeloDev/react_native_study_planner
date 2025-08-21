@@ -5,15 +5,18 @@ import { useCallback, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
+import { LoadingComponent } from "../../components/loading";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 
 export default function SubjectsScreen({ navigation }: Props) {
     const [subjectData, setSubjectData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
             const fecthSubjects = async () => {
+                setLoading(true);
                 try {
                     const snapshot = await firestore().collection('subjects').get();
 
@@ -22,6 +25,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                     }));
 
                     setSubjectData(data);
+                    setLoading(false);
                 } catch (error) {
                     console.log('Error fetching subjects: ', error);
                     Alert.alert('Something went wrong. Please try again.');
@@ -31,6 +35,13 @@ export default function SubjectsScreen({ navigation }: Props) {
             fecthSubjects();
         }, [])
     );
+
+    if (loading) {
+        return (
+            <LoadingComponent />
+        )
+    }
+
 
     return (
         <View style={styles.body}>
@@ -69,7 +80,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                 <TouchableOpacity
                     onPress={() => navigation.push('AddSubjects')}
                 >
-                    <Text style={styles.buttonText}>Add subject</Text>
+                    <Text style={styles.buttonText}>Add Subject</Text>
                 </TouchableOpacity>
             </View>
         </View>
