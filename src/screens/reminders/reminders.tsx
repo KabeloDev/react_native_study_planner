@@ -51,12 +51,19 @@ export default function RemindersScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Study Reminders</Text>
+            {reminders.length === 0 ? 
+            <View  style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+                <Text>No reminders at the moment</Text>
+            </View>
+                
+                :
+                null
+            }
+            
 
             <FlatList
                 style={styles.list}
                 data={reminders}
-                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <View style={styles.reminderItem}>
                         <View>
