@@ -83,7 +83,7 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.body}>
-            <Text>{subject.sessionTopic}</Text>
+            <Text>Session</Text>
 
             <View>
                 <TextInput

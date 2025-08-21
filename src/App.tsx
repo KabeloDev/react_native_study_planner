@@ -64,7 +64,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Subjects" component={SubjectsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AddSubjects" component={AddSubjectScreen} options={{ title: "Add Subject" }} />
-        <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Details" }} />
+        <Stack.Screen name="SubjectDetails" component={SubjectDetailsScreen} options={{ title: "Sessions" }} />
         <Stack.Screen name="AddSession" component={AddSessionsScreen} options={{ title: "Add Session" }} />
         <Stack.Screen name="UpdateSession" component={UpdateSessionScreen} options={{ title: "Update Session" }} />
       </Stack.Navigator>
