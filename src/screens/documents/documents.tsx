@@ -78,24 +78,23 @@ export default function DocumentsScreen() {
     return (
         <View style={styles.body}>
             <FlatList
-                style={{marginBottom: 200}}
+                style={{ marginBottom: 170, marginTop: 50 }}
+                numColumns={2}
                 showsVerticalScrollIndicator={false}
                 data={files}
                 keyExtractor={item => item.name}
                 renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={() => {
-                                openInBrowser(item.url);
-                                console.log(item.url)
-                            }}
-                        >
-                        <View style={{padding: 10}}>
-                            <Image
-                                source={require('../../images/files.png')}
-                                style={{ height: 250, width: 300, marginBottom: 50 }}
-                            />
-                        </View>
-                        <Text>{item.name}</Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            openInBrowser(item.url);
+                            console.log(item.url)
+                        }}
+                    >
+                        <Image
+                            source={require('../../images/files.png')}
+                            style={{ height: 150, width: 180, margin: 15 }}
+                        />
+                        <Text style={{marginLeft: 30}}>{item.name}</Text>
                     </TouchableOpacity>
                 )}
             />
@@ -114,7 +113,8 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 10
     },
     button: {
         position: 'absolute',

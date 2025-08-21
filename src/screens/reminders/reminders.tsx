@@ -1,58 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import messaging from '@react-native-firebase/messaging';
 
 
 export default function RemindersScreen() {
     const [reminders, setReminders] = useState<any[]>([]);
-    const [deviceToken, setDeviceToken] = useState<string>('');
 
     useEffect(() => {
-        const getToken = async () => {
-            const token = await messaging().getToken();
-            setDeviceToken(token);
-            console.log('FCM Token:', token);
-        };
-        getToken();
-    }, []);
-
-    useEffect(() => {
-        const unsubscribe = firestore()
+        firestore()
             .collection('reminders')
             .orderBy('reminderTime', 'asc')
             .onSnapshot(snapshot => {
-                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const data = snapshot.docs.map(doc => {
+                    const docData = doc.data();
+
+                    return {
+                        subject: docData.subject,
+                        topic: docData.topic,
+                        reminderTime: docData.reminderTime,
+                    };
+                });
+
                 setReminders(data);
             });
-
-        return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        const generateTestReminders = async () => {
-            if (!deviceToken) return;
 
-            const now = new Date();
-            for (let i = 1; i <= 5; i++) {
-                const reminderTime = new Date(now.getTime() + i * 60 * 1000); // every i minutes
-                await firestore().collection('reminders').add({
-                    topic: `Test Reminder #${i}`,
-                    subject: 'Testing',
-                    reminderTime: reminderTime.toISOString(),
-                    status: 'pending',
-                    fcmToken: deviceToken,
-                });
+    const deleteReminder = async (topic: string) => {
+        try {
+            const sessionSnapshot = await firestore()
+                .collection('reminders')
+                .where('topic', '==', topic)
+                .get();
+
+            if (sessionSnapshot.empty) {
+                console.log('No session reminders found with that topic');
+                return;
             }
-            console.log('Test reminders generated automatically!');
-        };
 
-        generateTestReminders();
-    }, [deviceToken]);
-
-
-    const deleteReminder = async (id: string) => {
-        await firestore().collection('reminders').doc(id).delete();
+            sessionSnapshot.forEach(async (doc) => {
+                await firestore().collection('reminders').doc(doc.id).delete();
+                console.log(`Deleted session reminder with id: ${doc.id}`);
+            });
+        } catch (error) {
+            console.error('Error deleting session reminder:', error);
+            Alert.alert('Something went wrong. Please try again.');
+        }
     };
 
 
@@ -70,11 +63,19 @@ export default function RemindersScreen() {
                             <Text style={styles.subject}>{item.subject}</Text>
                             <Text style={styles.topic}>{item.topic}</Text>
                             <Text style={styles.time}>
-                                {new Date(item.reminderTime).toLocaleTimeString()}
+                                {new Date(item.reminderTime).toLocaleDateString('en-US', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                })}{' '}
+                                {new Date(item.reminderTime).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}
                             </Text>
-                            <Text>Status: {item.status}</Text>
+
                         </View>
-                        <Button title="Delete" onPress={() => deleteReminder(item.id)} />
+                        <Button title="Delete" onPress={() => deleteReminder(item.topic)} />
                     </View>
                 )}
             />
