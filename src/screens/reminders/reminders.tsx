@@ -51,15 +51,15 @@ export default function RemindersScreen() {
 
     return (
         <View style={styles.container}>
-            {reminders.length === 0 ? 
-            <View  style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text>No reminders at the moment</Text>
-            </View>
-                
+            {reminders.length === 0 ?
+                <View style={styles.center}>
+                    <Text>No reminders at the moment</Text>
+                </View>
+
                 :
                 null
             }
-            
+
 
             <FlatList
                 style={styles.list}
@@ -107,4 +107,9 @@ const styles = StyleSheet.create({
     subject: { fontSize: 16, fontWeight: 'bold' },
     topic: { fontSize: 14, color: '#555' },
     time: { fontSize: 12, color: '#888' },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });

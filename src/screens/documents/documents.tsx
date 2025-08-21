@@ -2,9 +2,10 @@ import { StyleSheet, View, TouchableOpacity, Text, FlatList, Image } from "react
 import { pick, types } from '@react-native-documents/picker';
 import storage from '@react-native-firebase/storage';
 import RNFS from 'react-native-fs';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Linking } from 'react-native';
 import { LoadingComponent } from "../../components/loading";
+import { useFocusEffect } from "@react-navigation/native";
 
 
 export default function DocumentsScreen() {
@@ -34,26 +35,28 @@ export default function DocumentsScreen() {
         const [files, setFiles] = useState<FileItem[]>([]);
         const [loading, setLoading] = useState(true);
 
-        useEffect(() => {
-            const fetchFiles = async () => {
-                try {
-                    const listResult = await storage().ref(folder).listAll();
-                    const urls = await Promise.all(
-                        listResult.items.map(async ref => {
-                            const url = await ref.getDownloadURL();
-                            return { name: ref.name, url };
-                        })
-                    );
-                    setFiles(urls);
-                } catch (error) {
-                    console.error('Failed to fetch files:', error);
-                } finally {
-                    setLoading(false);
-                }
-            };
+        useFocusEffect(
+            useCallback(() => {
+                const fetchFiles = async () => {
+                    try {
+                        const listResult = await storage().ref(folder).listAll();
+                        const urls = await Promise.all(
+                            listResult.items.map(async ref => {
+                                const url = await ref.getDownloadURL();
+                                return { name: ref.name, url };
+                            })
+                        );
+                        setFiles(urls);
+                    } catch (error) {
+                        console.error('Failed to fetch files:', error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
 
-            fetchFiles();
-        }, [folder]);
+                fetchFiles();
+            }, [folder])
+        )
 
         return { files, loading };
     };
@@ -77,6 +80,13 @@ export default function DocumentsScreen() {
 
     return (
         <View style={styles.body}>
+            {files.length === 0 ?
+                <View style={styles.center}>
+                    <Text>No files at the moment</Text>
+                </View>
+                :
+                null
+            }
             <FlatList
                 style={{ marginBottom: 170, marginTop: 50 }}
                 numColumns={2}
@@ -94,7 +104,7 @@ export default function DocumentsScreen() {
                             source={require('../../images/files.png')}
                             style={{ height: 150, width: 180, margin: 15 }}
                         />
-                        <Text style={{marginLeft: 30}}>{item.name}</Text>
+                        <Text style={{ marginLeft: 30 }}>{item.name}</Text>
                     </TouchableOpacity>
                 )}
             />
@@ -137,4 +147,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 60
     },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 100
+    }
 })

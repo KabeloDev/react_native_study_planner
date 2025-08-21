@@ -1,5 +1,5 @@
 import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { RootStackParamList, RootTabParamList } from "../../../types/route.type";
+import { RootStackParamList } from "../../../types/route.type";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
