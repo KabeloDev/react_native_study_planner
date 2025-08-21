@@ -80,7 +80,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                 <TouchableOpacity
                     onPress={() => navigation.push('AddSubjects')}
                 >
-                    <Text style={styles.buttonText}>Add subject</Text>
+                    <Text style={styles.buttonText}>Add Subject</Text>
                 </TouchableOpacity>
             </View>
         </View>
