@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../types/route.type";
 import { useCallback, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
@@ -36,7 +36,7 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
                     setSessionData(filtered);
                 } catch (error) {
                     console.log('Error fetching subject sessions: ', error);
-                    Alert.alert('Something went wrong. Please try again.');
+                    ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
                 }
             }
 
@@ -69,7 +69,7 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
             subjectSnapshot.forEach(async (doc) => {
                 await firestore().collection('subjects').doc(doc.id).delete();
                 navigation.goBack();
-                Alert.alert(`${subject.title} deleted!`);
+                ToastAndroid.show(`${subject.title} deleted!`, ToastAndroid.SHORT);
                 console.log(`Deleted subject with id: ${doc.id}`);
             });
 
@@ -83,11 +83,11 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.body}>
-            <View>
+            <View style={styles.flatlistView}>
                 <FlatList
                     data={sessionData}
                     numColumns={1}
-                    contentContainerStyle={{ padding: 8 }}
+                    contentContainerStyle={styles.flatlistContainer}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => navigation.navigate('UpdateSession', { subject: item })}
@@ -173,4 +173,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 25
     },
+    flatlistContainer: { 
+        padding: 8 
+    },
+    flatlistView: {
+        marginBottom: 200
+    }
 })

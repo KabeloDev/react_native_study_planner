@@ -1,8 +1,9 @@
-import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { RootStackParamList, RootTabParamList } from "../../../types/route.type";
+import { Button, StyleSheet, ToastAndroid, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { RootStackParamList } from "../../../types/route.type";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
+import { LoadingComponent } from "../../../components/loading";
 
 type Props = NativeStackScreenProps<
     RootStackParamList,
@@ -15,6 +16,8 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
     let [sessionTopic, setSessionTopic] = useState('');
     let [sessionDate, setSessionDate] = useState('');
     let [sessionTime, setSessionTime] = useState('');
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setSessionTopic(subject.sessionTopic ?? '');
@@ -38,12 +41,12 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
             sessionSnapshot.forEach(async (doc) => {
                 await firestore().collection('sessions').doc(doc.id).delete();
                 navigation.goBack();
-                Alert.alert(`Session deleted!`);
+                ToastAndroid.show(`Session deleted!`, ToastAndroid.SHORT);
                 console.log(`Deleted subject session with id: ${doc.id}`);
             });
         } catch (error) {
             console.error('Error deleting subject session:', error);
-            Alert.alert('Something went wrong. Please try again.');
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
     };
 
@@ -72,12 +75,12 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
                     sessionTime: sessionTime
                 });
                 navigation.goBack();
-                Alert.alert(`Session updated!`);
+                ToastAndroid.show(`Session updated!`, ToastAndroid.SHORT);
                 console.log(`Updated subject session with id: ${doc.id}`);
             });
         } catch (error) {
             console.error('Error updating subject session:', error);
-            Alert.alert('Something went wrong. Please try again.');
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
     };
 
@@ -87,21 +90,32 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
         try {
             const now = new Date();
 
+            setLoading(true);
+
             await firestore().collection('reminders').add({
                 subject: subject.sessionSubject,
                 topic: subject.sessionTopic,
                 reminderTime: now.toISOString(),
             });
-            
-            Alert.alert('Reminder set');
+
+            ToastAndroid.show('Reminder set', ToastAndroid.SHORT);
         } catch (error) {
             console.log(error);
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
+
+        setLoading(false);
+    }
+
+    if (loading) {
+        return (
+            <LoadingComponent />
+        )
     }
 
     return (
         <View style={styles.body}>
-            <Text>Session</Text>
+            <Text style={styles.inputTitle}>{subject.sessionSubject}</Text>
 
             <View>
                 <TextInput
@@ -193,5 +207,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginVertical: 5,
         width: 400
+    },
+    inputTitle: {
+        marginBottom: 20
     },
 })

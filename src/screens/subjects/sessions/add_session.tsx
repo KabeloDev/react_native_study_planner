@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../../../types/route.type";
 import { useState } from "react";
 import firestore from '@react-native-firebase/firestore';
@@ -22,11 +22,11 @@ export default function AddSessionsScreen({ route }: Props) {
                 sessionDate: sessionDate,
                 sessionTime: sessionTime
             });
-            Alert.alert("Subject session added!");
+            ToastAndroid.show('Session added succesfully!', ToastAndroid.SHORT);
             navigation.goBack();
         } catch (error) {
             console.error("Error adding subject session:", error);
-            Alert.alert('Something went wrong. Please try again.');
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
     };
 

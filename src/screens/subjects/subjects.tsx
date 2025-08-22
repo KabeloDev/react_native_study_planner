@@ -1,4 +1,4 @@
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
 import { useCallback, useState } from "react";
@@ -28,7 +28,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                     setLoading(false);
                 } catch (error) {
                     console.log('Error fetching subjects: ', error);
-                    Alert.alert('Something went wrong. Please try again.');
+                    ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
                 }
             }
 
@@ -46,7 +46,7 @@ export default function SubjectsScreen({ navigation }: Props) {
     return (
         <View style={styles.body}>
             {subjectData.length === 0 ?
-                <View style={{ flex: 1 }}>
+                <View style={styles.messageContainer}>
                     <View>
                         <Text style={styles.message}>No subjects at the moment.</Text>
                         <Text style={styles.message}>Add subjects and start planning your studies.</Text>
@@ -63,7 +63,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                 <FlatList
                     data={subjectData}
                     numColumns={3}
-                    contentContainerStyle={{ padding: 8 }}
+                    contentContainerStyle={styles.flatlistContainer}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => navigation.push('SubjectDetails', { subject: item })}
@@ -138,4 +138,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontStyle: 'italic'
     },
+    messageContainer: {
+        flex: 1
+    },
+    flatlistContainer: {
+        padding: 8
+    }
 })
