@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Alert, TouchableOpacity, TextInput } from "react-native";
+import { StyleSheet, View, Text, ToastAndroid, TouchableOpacity, TextInput } from "react-native";
 import firestore from '@react-native-firebase/firestore';
 import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -25,11 +25,11 @@ export default function AddSubjectScreen({ navigation }: Props) {
                 sessionDate: sessionDate,
                 sessionTime: sessionTime
             });
-            Alert.alert("Subject added!");
+            ToastAndroid.show("Subject added!", ToastAndroid.SHORT);
             navigation.navigate('Subjects');
         } catch (error) {
             console.error("Error adding subject:", error);
-            Alert.alert('Something went wrong. Please try again.');
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
     };
 

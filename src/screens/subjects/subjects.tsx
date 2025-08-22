@@ -1,4 +1,4 @@
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/route.type";
 import { useCallback, useState } from "react";
@@ -28,7 +28,7 @@ export default function SubjectsScreen({ navigation }: Props) {
                     setLoading(false);
                 } catch (error) {
                     console.log('Error fetching subjects: ', error);
-                    Alert.alert('Something went wrong. Please try again.');
+                    ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
                 }
             }
 

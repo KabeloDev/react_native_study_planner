@@ -88,7 +88,7 @@ export default function DocumentsScreen() {
                 null
             }
             <FlatList
-                style={{ marginBottom: 170, marginTop: 50 }}
+                style={{ marginBottom: 200, marginTop: 50 }}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 data={files}
