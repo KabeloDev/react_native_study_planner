@@ -42,6 +42,8 @@ export default function RemindersScreen() {
                 await firestore().collection('reminders').doc(doc.id).delete();
                 console.log(`Deleted session reminder with id: ${doc.id}`);
             });
+
+            ToastAndroid.show(`Reminder deleted!`, ToastAndroid.SHORT);
         } catch (error) {
             console.error('Error deleting session reminder:', error);
             ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
@@ -62,7 +64,8 @@ export default function RemindersScreen() {
 
 
             <FlatList
-                style={styles.list}
+                style={styles.flatlist}
+                showsVerticalScrollIndicator={false}
                 data={reminders}
                 renderItem={({ item }) => (
                     <View style={styles.reminderItem}>
@@ -101,8 +104,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 16
     },
-    list: {
-        marginTop: 16
+    flatlist: {
+        marginTop: 16,
+        marginBottom: 100
     },
     reminderItem: {
         flexDirection: 'row',

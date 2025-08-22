@@ -3,6 +3,7 @@ import { RootStackParamList } from "../../../types/route.type";
 import firestore from '@react-native-firebase/firestore';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
+import { LoadingComponent } from "../../../components/loading";
 
 type Props = NativeStackScreenProps<
     RootStackParamList,
@@ -15,6 +16,8 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
     let [sessionTopic, setSessionTopic] = useState('');
     let [sessionDate, setSessionDate] = useState('');
     let [sessionTime, setSessionTime] = useState('');
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setSessionTopic(subject.sessionTopic ?? '');
@@ -87,6 +90,8 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
         try {
             const now = new Date();
 
+            setLoading(true);
+
             await firestore().collection('reminders').add({
                 subject: subject.sessionSubject,
                 topic: subject.sessionTopic,
@@ -96,7 +101,16 @@ export default function UpdateSessionScreen({ route, navigation }: Props) {
             ToastAndroid.show('Reminder set', ToastAndroid.SHORT);
         } catch (error) {
             console.log(error);
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
+
+        setLoading(false);
+    }
+
+    if (loading) {
+        return (
+            <LoadingComponent />
+        )
     }
 
     return (
