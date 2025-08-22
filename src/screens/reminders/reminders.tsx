@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert, ToastAndroid } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 
@@ -44,7 +44,7 @@ export default function RemindersScreen() {
             });
         } catch (error) {
             console.error('Error deleting session reminder:', error);
-            Alert.alert('Something went wrong. Please try again.');
+            ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
         }
     };
 
@@ -91,9 +91,19 @@ export default function RemindersScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, marginTop: 50 },
-    title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
-    list: { marginTop: 16 },
+    container: {
+        flex: 1,
+        padding: 16,
+        marginTop: 50
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 16
+    },
+    list: {
+        marginTop: 16
+    },
     reminderItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -104,9 +114,18 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 8,
     },
-    subject: { fontSize: 16, fontWeight: 'bold' },
-    topic: { fontSize: 14, color: '#555' },
-    time: { fontSize: 12, color: '#888' },
+    subject: {
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    topic: {
+        fontSize: 14,
+        color: '#555'
+    },
+    time: {
+        fontSize: 12,
+        color: '#888'
+    },
     center: {
         flex: 1,
         justifyContent: 'center',

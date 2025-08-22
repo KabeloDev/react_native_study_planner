@@ -83,11 +83,11 @@ export default function SubjectDetailsScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.body}>
-            <View style={{marginBottom: 200}}>
+            <View style={styles.flatlistView}>
                 <FlatList
                     data={sessionData}
                     numColumns={1}
-                    contentContainerStyle={{ padding: 8 }}
+                    contentContainerStyle={styles.flatlistContainer}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => navigation.navigate('UpdateSession', { subject: item })}
@@ -173,4 +173,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 25
     },
+    flatlistContainer: { 
+        padding: 8 
+    },
+    flatlistView: {
+        marginBottom: 200
+    }
 })

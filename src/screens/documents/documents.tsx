@@ -88,7 +88,7 @@ export default function DocumentsScreen() {
                 null
             }
             <FlatList
-                style={{ marginBottom: 200, marginTop: 50 }}
+                style={styles.flatlist}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 data={files}
@@ -102,7 +102,7 @@ export default function DocumentsScreen() {
                     >
                         <Image
                             source={require('../../images/files.png')}
-                            style={{ height: 150, width: 180, margin: 15 }}
+                            style={styles.image}
                         />
                         <Text style={{ marginLeft: 30 }}>{item.name}</Text>
                     </TouchableOpacity>
@@ -152,5 +152,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 100
+    },
+    flatlist: {
+        marginBottom: 200,
+        marginTop: 50
+    },
+    image: {
+        height: 150,
+        width: 180,
+        margin: 15
     }
 })
