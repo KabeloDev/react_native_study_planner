@@ -45,7 +45,7 @@ Documents screen: <br/>
 <br />
 <br />
 Upload files screen: <br/>
-<img src="https://i.imgur.com/LO825zv.jpeg" height="500%" width="100%" />
+<img src="https://i.imgur.com/O5138pD.jpeg" height="500%" width="100%" />
 <br />
 <br />
 Push notifications: <br/>
