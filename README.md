@@ -1,16 +1,16 @@
-<h1>Advice Generator</h1>
+<h1>Study Planner</h1>
 
- ### [YouTube Demonstration](https://youtu.be/9kwwN6IHJ18)
+ ### [YouTube Demonstration](https://youtu.be/QiBjNVyg0cA)
 
 <h2>Description</h2>
-Get advice with a single tap!
+Plan, schedule, and manage your study sessions for smarter learning.
 <br />
 
 
 <h2>Languages and Utilities Used</h2>
 
-- <b>Dart & Flutter</b>
-- <b>Advice API (https://api.adviceslip.com/)</b>
+- <b>React Native</b>
+- <b>Firebase</b>
 
 <h2>Environments Used </h2>
 
@@ -20,28 +20,39 @@ Get advice with a single tap!
 <h2>Program walk-through:</h2>
 
 <p align="center">
-Splash screen: <br/>
-<img src="https://i.imgur.com/ZNkGRsU.png" height="500%" width="100%" />
+Subjects screen: <br/>
+<img src="https://i.imgur.com/nlKiK0i.jpeg" height="500%" width="100%" />
 <br />
 <br />
-Login screen: <br/>
-<img src="https://i.imgur.com/EQ1R0Nq.png" height="500%" width="100%" />
+Add subject screen: <br/>
+<img src="https://i.imgur.com/tlnldLR.jpeg" height="500%" width="100%" />
 <br />
 <br />
-Sign in screen: <br/>
-<img src="https://i.imgur.com/K1bRPPY.png" height="500%" width="100%" />
+Sessions screen: <br/>
+<img src="https://i.imgur.com/U5k1Yo4.jpeg" height="500%" width="100%" />
 <br />
 <br />
-Sign up screen: <br/>
-<img src="https://i.imgur.com/Mtcnt0E.png" height="500%" width="100%" />
+Update sessions screen: <br/>
+<img src="https://i.imgur.com/i2XWDBg.jpeg" height="500%" width="100%" />
 <br />
 <br />
-Home screen: <br/>
-<img src="https://i.imgur.com/AnX7Zr4.png" height="500%" width="100%" />
+Reminders screen: <br/>
+<img src="https://i.imgur.com/ta6ABAK.jpeg" height="500%" width="100%" />
 <br />
 <br />
-No internet: <br/>
-<img src="https://i.imgur.com/TU6xicj.png" height="500%" width="100%" />
+Documents screen: <br/>
+<img src="https://i.imgur.com/LO825zv.jpeg" height="500%" width="100%" />
+<br />
+<br />
+Upload files screen: <br/>
+<img src="https://i.imgur.com/LO825zv.jpeg" height="500%" width="100%" />
+<br />
+<br />
+Push notifications: <br/>
+<img src="https://i.imgur.com/hbpr46t.jpeg" height="500%" width="100%" />
+<br />
+<br />
+<img src="https://i.imgur.com/5jEtGoA.jpeg" height="500%" width="100%" />
 <br />
 <br />
 
